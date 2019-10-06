@@ -1,19 +1,21 @@
 <?xml version="1.0"?>
 
+<!--Edited from hector_slam_launch/tutorial.launch-->
+
 <launch>
 
-  <arg name="geotiff_map_file_path" default="$(find hector_geotiff)/maps"/>
+  <arg name="geotiff_map_file_path" default="$(find wheego)/maps"/>
 
   <param name="/use_sim_time" value="true"/>
 
   <node pkg="rviz" type="rviz" name="rviz"
-    args="-d $(find hector_slam_launch)/rviz_cfg/mapping_demo.rviz"/>
+    args="-d $(find wheego)/launch/mapNav.rviz"/>
 
   <node pkg="tf" type="static_transform_publisher"
     name="base_to_laser_broadcaster"
     args="0 0 0 0 0 0 base_footprint velodyne 100"/>
 
-  <include file="$(find hector_mapping)/launch/mapping_default.launch">
+  <include file="$(find wheego)/launch/mapping_edit.launch">
     <arg name="odom_frame" value="base_footprint"/>
   </include>
 
