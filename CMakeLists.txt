@@ -11,6 +11,10 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rospy
   std_msgs
+  
+  nav_msgs
+  velodyne_pointcloud
+  hybrid_astar
 )
 
 ## System dependencies are found with CMake's conventions
@@ -104,9 +108,9 @@ find_package(catkin REQUIRED COMPONENTS
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES wheego
-#  CATKIN_DEPENDS roscpp rospy std_msgs
-#  DEPENDS system_lib
+  LIBRARIES wheego
+  CATKIN_DEPENDS roscpp rospy std_msgs nav_msgs velodyne_pointcloud hybrid_astar
+  DEPENDS system_lib
 )
 
 ###########

@@ -16,7 +16,7 @@
     <arg name="odom_frame" value="base_footprint"/>
   </include>
 
-  <!--<node name="map_mask" pkg="wheego" type="map_mask"/>-->
+  <node name="map_mask" pkg="wheego" type="map_mask.py"/>
 
   <include file="$(find hector_geotiff)/launch/geotiff_mapper.launch">
     <arg name="trajectory_source_frame_name" value="scanmatcher_frame"/>
@@ -26,7 +26,7 @@
   <!-- Turn on hybrid_astar node -->
   <node name="hybrid_astar" pkg="hybrid_astar" type="hybrid_astar">
     <!--make initalpose change to poseupdate?-->
-    <remap from="initialpose" to="poseupdate"/>
+    <remap from="initialpose" to="pose2"/>
     <remap from="map" to="map2"/>
   </node>
   

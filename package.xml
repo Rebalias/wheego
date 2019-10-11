@@ -60,6 +60,12 @@
   <exec_depend>std_msgs</exec_depend>
   <depend>sensor_msgs</depend>
 
+  <depend>nav_msgs</depend>
+  <build_depend>velodyne_pointcloud</build_depend>
+  <build_depend>hybrid_astar</build_depend>
+  <exec_depend>velodyne_pointcloud</exec_depend>
+  <exec_depend>hybrid_astar</exec_depend>
+
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>
