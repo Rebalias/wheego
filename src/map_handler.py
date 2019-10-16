@@ -8,51 +8,60 @@ from geometry_msgs.msg import PoseStamped as PoseSt
 
 xOffs = 0
 yOffs = 0
-map2 = OccupancyGrid()
+init = False
 pose2 = PoseCv()
+goal2 = PoseSt()
 
-"""
 def mapMask(map1):
-  global map2
   global xOffs
   global yOffs
-  map2 = OccupancyGrid()
-  map2.header = map1.header
-  map2.info = map1.info
+  global init
   xOffs = map1.info.width
   yOffs = map1.info.height
-  map2.info.origin.position.x = 0
-  map2.info.origin.position.y = 0
-  map2.data = [0 for x in map1.data]
-  #[0 if x==-1 else x for x in map1.data]
-  pubMD.publish(map2)
-"""
+  if not init:
+    iPose = PoseCv()
+    iPose.header.frame_id = 'map'
+    iPose.pose.pose.position.x = xOffs/2
+    iPose.pose.pose.position.y = yOffs/2
+    iPose.pose.pose.orientation.w = 1.0
+    iPose.pose.covariance = [0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.06853891945200942]
+    pubIP.publish(iPose)
+    init = True
 
 def poseMask(pose1):
   global pose2
   pose2 = PoseCv()
-  pose2 = pose1
-  pose2.pose.pose.position.x += xOffs/2
-  pose2.pose.pose.position.y += yOffs/2
+  pose2.header.frame_id = 'map'
+  pose2.pose = pose1.pose
   pubPD.publish(pose2)
 
-#Will hA* fail if a new map is broadcast?
+def goalFn(goal1):
+  global goal2
+  goal2 = PoseSt()
+  goal2.header.frame_id = 'map'
+  goal2.pose = goal1.pose
+  pubGD.publish(goal2)
+  bcast()
+  
+def pathFn(foo):
+  bcast()
+  time.sleep(5.0)
 
-#Broadcast new map and new start pose when hA* produces path or on manual command (recieving goal?)
-def bcast(foo):
-  #pubMN.publish(map2)
-  #time.sleep(0.5)
+def bcast():
   pubPN.publish(pose2)
+  pubGN.publish(goal2)
 
 rospy.init_node('map_handler')
-subM = rospy.Subscriber('map',OccupancyGrid,mapMask)
-subP = rospy.Subscriber('poseupdate',PoseCv,poseMask)
-subG = rospy.Subscriber('move_base_simple/goal',PoseSt,bcast)
-subS = rospy.Subscriber('sPath',Path,bcast)
 
-pubMD = rospy.Publisher('map_dis',OccupancyGrid,latch=True,queue_size=2)
-pubMN = rospy.Publisher('map_nav',OccupancyGrid,latch=True,queue_size=2)
 pubPD = rospy.Publisher('pose_dis',PoseCv,latch=True,queue_size=5)
 pubPN = rospy.Publisher('pose_nav',PoseCv,latch=True,queue_size=5)
+pubGD = rospy.Publisher('goal_dis',PoseSt,latch=True,queue_size=5)
+pubGN = rospy.Publisher('goal_nav',PoseSt,latch=True,queue_size=5)
+pubIP = rospy.Publisher('initialpose',PoseCv,latch=True,queue_size=5)
+
+subM = rospy.Subscriber('map',OccupancyGrid,mapMask)
+subP = rospy.Subscriber('poseupdate',PoseCv,poseMask)
+subG = rospy.Subscriber('move_base_simple/goal',PoseSt,goalFn)
+subS = rospy.Subscriber('sPath',Path,pathFn)
 
 rospy.spin()

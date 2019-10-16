@@ -14,6 +14,7 @@
 
   <include file="$(find wheego)/launch/mapping_edit.launch">
     <arg name="odom_frame" value="base_footprint"/>
+    <arg name="map_start" value="-0.00625"/>
   </include>
 
   <!--<node name="map_mask" pkg="wheego" type="map_mask.py"/>-->
@@ -24,20 +25,24 @@
     <arg name="map_file_path" value="$(arg geotiff_map_file_path)"/>
   </include>
 
-  <!-- Turn on hybrid_astar node -->
-  <!--
   <node name="hybrid_astar" pkg="hybrid_astar" type="hybrid_astar">
     <remap from="initialpose" to="pose_nav"/>
     <remap from="map" to="map_nav"/>
   </node>
-  -->
   
+  <node name="map_server" pkg="map_server" type="map_server"
+    args="$(find wheego)/maps/outSmall.yaml">
+    <remap from="map" to="map_nav"/>
+  </node>
   <node pkg="tf" type="static_transform_publisher"
-    name="odom_to_map2_broadcaster"
-    args="0 0 0 0 0 0 odom map2 100"/>
+    name="odom_map_nav_bcast"
+    args="0 0 0 0 0 0 odom map_nav 100"/>
   <node pkg="tf" type="static_transform_publisher"
-    name="map2_to_path_broadcaster"
-    args="0 0 0 0 0 0 map2 path 100"/>
+    name="map_nav_path_bcast"
+    args="0 0 0 0 0 0 map_nav path 100"/>
+  <node pkg="tf" type="static_transform_publisher"
+    name="map_nav_map_bcast"
+    args="0 0 0 0 0 0 map_nav map 100"/>
   <!--
   <node name="tf_broadcaster" pkg="hybrid_astar" type="tf_broadcaster">
     <remap from="map" to="map2"/>
