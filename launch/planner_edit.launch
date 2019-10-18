@@ -14,10 +14,14 @@
 
   <include file="$(find wheego)/launch/mapping_edit.launch">
     <arg name="odom_frame" value="base_footprint"/>
-    <arg name="map_start" value="-0.00625"/>
+    <arg name="map_start_x" value="-0.00625"/>
+    <arg name="map_start_y" value="-0.00625"/>
+    <arg name="map_size" value="80"/>
+    <arg name="scan_topic" value="scan2"/>
   </include>
 
-  <!--<node name="map_mask" pkg="wheego" type="map_mask.py"/>-->
+  <include file="$(find wheego)/launch/cloud_to_scan.launch"/>
+
   <node name="map_handler" pkg="wheego" type="map_handler.py"/>
 
   <include file="$(find hector_geotiff)/launch/geotiff_mapper.launch">
@@ -43,12 +47,6 @@
   <node pkg="tf" type="static_transform_publisher"
     name="map_nav_map_bcast"
     args="0 0 0 0 0 0 map_nav map 100"/>
-  <!--
-  <node name="tf_broadcaster" pkg="hybrid_astar" type="tf_broadcaster">
-    <remap from="map" to="map2"/>
-  </node>
-  -->
-
   <node name="rviz" pkg="rviz" type="rviz"
     args="-d $(find wheego)/launch/mapNav.rviz" />
 </launch>
