@@ -13,6 +13,7 @@
   <arg name="map_start_x" default="0.5"/>
   <arg name="map_start_y" default="0.5"/>
   <arg name="map_size" default="80"/>
+  <arg name="resolution" default="1"/>
   
   <node pkg="hector_mapping" type="hector_mapping" name="hector_mapping" output="screen">
     
@@ -27,7 +28,7 @@
     <param name="pub_map_odom_transform" value="$(arg pub_map_odom_transform)"/>
     
     <!-- Map size / start point -->
-    <param name="map_resolution" value="1"/>
+    <param name="map_resolution" value="$(arg resolution)"/>
     <param name="map_size" value="$(arg map_size)"/>
     <param name="map_start_x" value="$(arg map_start_x)"/>
     <param name="map_start_y" value="$(arg map_start_y)" />
@@ -36,8 +37,8 @@
     <!-- Map update parameters -->
     <param name="update_factor_free" value="0.4"/>
     <param name="update_factor_occupied" value="0.9" />    
-    <param name="map_update_distance_thresh" value="0.4"/> <!--def 0.4 -->
-    <param name="map_update_angle_thresh" value="0.03" /> <!--def 0.03 -->
+    <param name="map_update_distance_thresh" value="0.2"/> <!--def 0.4 -->
+    <param name="map_update_angle_thresh" value="0.01" /> <!--def 0.03 -->
     <param name="laser_z_min_value" value = "-1.0" />
     <param name="laser_z_max_value" value = "1.0" />
     

@@ -6,7 +6,7 @@
 
   <arg name="geotiff_map_file_path" default="$(find wheego)/maps"/>
   
-  <include file="$(find velodyne_pointcloud)/launch/VLP16_points.launch"/>
+  <include file="$(find wheego)/launch/vlp16.launch"/>
 
   <node pkg="tf" type="static_transform_publisher"
     name="base_to_laser_broadcaster"

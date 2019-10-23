@@ -13,10 +13,10 @@
     args="0 0 0 0 0 0 base_footprint velodyne 100"/>
 
   <include file="$(find wheego)/launch/mapping_edit.launch">
-    <arg name="odom_frame" value="base_footprint"/>
-    <arg name="map_start_x" value="-0.00625"/>
-    <arg name="map_start_y" value="-0.00625"/>
     <arg name="map_size" value="80"/>
+    <arg name="map_start_x" value="-0.00625"/> <!-- -1/map_size-->
+    <arg name="map_start_y" value="-0.00625"/>
+    <arg name="odom_frame" value="base_footprint"/>
     <arg name="scan_topic" value="scan2"/>
   </include>
 
