@@ -5,41 +5,48 @@
 <launch>
 
   <arg name="geotiff_map_file_path" default="$(find wheego)/maps"/>
+  
+  <include file="$(find wheego)/launch/vlp16.launch"/>
 
   <node pkg="tf" type="static_transform_publisher"
     name="base_to_laser_broadcaster"
     args="0 0 0 0 0 0 base_footprint velodyne 100"/>
 
-  <include file="$(find velodyne_pointcloud)/launch/VLP16_points.launch"/>
-
   <include file="$(find wheego)/launch/mapping_edit.launch">
     <arg name="odom_frame" value="base_footprint"/>
+    <arg name="map_start_x" value="-0.00625"/>
+    <arg name="map_start_y" value="-0.00625"/>
+    <arg name="map_size" value="80"/>
+    <arg name="scan_topic" value="scan2"/>
   </include>
 
-  <!--<node name="map_mask" pkg="wheego" type="map_mask"/>-->
+  <include file="$(find wheego)/launch/cloud_to_scan.launch"/>
+
+  <node name="map_handler" pkg="wheego" type="map_handler.py"/>
 
   <include file="$(find hector_geotiff)/launch/geotiff_mapper.launch">
     <arg name="trajectory_source_frame_name" value="scanmatcher_frame"/>
     <arg name="map_file_path" value="$(arg geotiff_map_file_path)"/>
   </include>
 
-  <!-- Turn on hybrid_astar node -->
   <node name="hybrid_astar" pkg="hybrid_astar" type="hybrid_astar">
-    <remap from="initialpose" to="poseupdate"/>
-    <remap from="map" to="map2"/>
+    <remap from="initialpose" to="pose_nav"/>
+    <remap from="map" to="map_nav"/>
   </node>
   
-  <node pkg="tf" type="static_transform_publisher"
-    name="odom_to_map2_broadcaster"
-    args="0 0 0 0 0 0 odom map2 100"/>
-  <node pkg="tf" type="static_transform_publisher"
-    name="map2_to_path_broadcaster"
-    args="0 0 0 0 0 0 map2 path 100"/>
-  <!--
-  <node name="tf_broadcaster" pkg="hybrid_astar" type="tf_broadcaster">
-    <remap from="map" to="map2"/>
+  <node name="map_server" pkg="map_server" type="map_server"
+    args="$(find wheego)/maps/outSmall.yaml">
+    <remap from="map" to="map_nav"/>
   </node>
-  -->
+  <node pkg="tf" type="static_transform_publisher"
+    name="odom_map_nav_bcast"
+    args="0 0 0 0 0 0 odom map_nav 100"/>
+  <node pkg="tf" type="static_transform_publisher"
+    name="map_nav_path_bcast"
+    args="0 0 0 0 0 0 map_nav path 100"/>
+  <node pkg="tf" type="static_transform_publisher"
+    name="map_nav_map_bcast"
+    args="0 0 0 0 0 0 map_nav map 100"/>
 
   <node name="rviz" pkg="rviz" type="rviz"
     args="-d $(find wheego)/launch/mapNav.rviz" />

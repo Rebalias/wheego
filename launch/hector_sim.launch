@@ -10,6 +10,8 @@
 
   <node pkg="rviz" type="rviz" name="rviz"
     args="-d $(find wheego)/launch/mapNav.rviz"/>
+  
+  <include file="$(find wheego)/launch/cloud_to_scan.launch"/>
 
   <node pkg="tf" type="static_transform_publisher"
     name="base_to_laser_broadcaster"
@@ -17,6 +19,8 @@
 
   <include file="$(find wheego)/launch/mapping_edit.launch">
     <arg name="odom_frame" value="base_footprint"/>
+    <arg name="scan_topic" value="scan2" />
+    <arg name="map_size" value="150"/>
   </include>
 
   <include file="$(find hector_geotiff)/launch/geotiff_mapper.launch">
