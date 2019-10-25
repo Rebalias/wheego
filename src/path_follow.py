@@ -35,10 +35,8 @@ def poseFn(pose):
   tx = g[0] - loc[0]
   ty = g[1] - loc[1]
   el = tx*px + ty*py #Lateral distance
-  steer = Float32()
-  steer.data = np.arctan(2*L*el/(ld*ld))
-  print(steer.data)
-  #pub.publish(steer)
+  steer = np.arctan(2*L*el/(ld*ld))
+  pub.publish(steer)
 
 def pathFn(path):
   global pathF
