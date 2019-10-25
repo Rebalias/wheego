@@ -9,7 +9,7 @@ from geometry_msgs.msg import PoseWithCovarianceStamped as PoseCv
 
 pathF = Path()
 L = 1   #Length from rear axle to front axle
-ld = 5  #Look ahead distance
+ld = 10  #Look ahead distance
 
 def poseFn(pose):
   x = pose.pose.pose.position.x
@@ -23,6 +23,7 @@ def poseFn(pose):
   pathx = [foo.pose.position.x for foo in pathF.poses]
   pathy = [foo.pose.position.y for foo in pathF.poses]
   path = np.matrix.transpose(np.array([pathx, pathy]))
+  #needs better setup, maybe find closest position first?
   g = path[0]
   i = 1
   d = np.linalg.norm(loc - path[i])
@@ -36,17 +37,19 @@ def poseFn(pose):
   el = tx*px + ty*py #Lateral distance
   steer = Float32()
   steer.data = np.arctan(2*L*el/(ld*ld))
-  pub.publish(steer)
+  print(steer.data)
+  #pub.publish(steer)
 
 def pathFn(path):
   global pathF
-  pathF = path
+  if len(path.poses) > 0:
+    pathF = path
 
 rospy.init_node('path_follow')
 
-pub = rospy.Publishter('steerAngle',Float32,latch=True,queue_size=5)
+pub = rospy.Publisher('steerAngle',Float32,latch=True,queue_size=5)
 
-subPose = rospy.Subscriber('poseupdate',PoseCv,poseFn)
 subPath = rospy.Subscriber('sPath',Path,pathFn)
+subPose = rospy.Subscriber('poseupdate',PoseCv,poseFn)
 
 rospy.spin()
