@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 
 import rospy
-from rospy.numpy_msg import numpy_msg
-from rospy_tutorials.msg import Floats
+from std_msgs.msg import Float32
 from geometry_msgs.msg import PoseStamped, Pose, PoseWithCovarianceStamped, PoseArray
 from nav_msgs.msg import Path
 import math
@@ -84,10 +83,11 @@ def trace_array(msg):
             yaw.append(state.yaw)
             v.append(state.v)
             t.append(time)
+            steer_a.publish(di)
             if simulation is True:  # pragma: no cover
                 plt.cla()
                 carpull.plot_arrow(state.x, state.y, state.yaw)
-                steer_a.publish(state.yaw)
+
                 plt.plot(cx, cy, "-r", label="course")
                 plt.plot(x, y, "-b", label="trajectory")
                 plt.plot(cx[target_ind], cy[target_ind], "xg", label="target")
@@ -103,11 +103,12 @@ def trace_array(msg):
 
 rospy.init_node('path_array', anonymous=True)
 r = rospy.Rate(1)
-steer_a = rospy.Publisher('steer_angle', Floats, queue_size = 1)
+steer_a = rospy.Publisher('steer_angle', Float32, queue_size = 1)
+rospy.Subscriber('/car_traject',PoseStamped, check_pose)
+rospy.Subscriber('/sPath',Path, trace_array)
 while not rospy.is_shutdown():
 
-    rospy.Subscriber('/car_traject',PoseStamped, check_pose)
-    rospy.Subscriber('/sPath',Path, trace_array)
+
     #a = np.array(send, dtype=np.float32)
     #pub.publish(a)
     r.sleep()

@@ -5,7 +5,7 @@
   <node name="hybrid_astar" pkg="hybrid_astar" type="hybrid_astar" /> 
   <node name="tf_broadcaster" pkg="hybrid_astar" type="tf_broadcaster" />
   <node name="map_server" pkg="map_server" type="map_server"
-    args="$(find wheego)/maps/mapOutMask.yaml" />
+    args="$(find wheego)/maps/mapTest.yaml" />
   <node name="rviz" pkg="rviz" type="rviz"
     args="-d $(find wheego)/launch/mapNav.rviz" />
 </launch>
