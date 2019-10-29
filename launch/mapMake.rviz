@@ -24,7 +24,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: LaserScan
+    SyncSource: ""
 Toolbars:
   toolButtonStyle: 2
 Visualization Manager:
@@ -279,8 +279,8 @@ Visualization Manager:
       Scale: 2.29999995
       Target Frame: <Fixed Frame>
       Value: TopDownOrtho (rviz)
-      X: 150
-      Y: 150
+      X: 0
+      Y: 0
     Saved: ~
 Window Geometry:
   Displays:

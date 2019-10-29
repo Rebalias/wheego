@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<launch>
+  <include file="$(find wheego)/launch/mapper.launch">
+    <!-- mapper_x = mapper_y = -1/(2*mapper_s*mapper_r)-->
+    <arg name="mapper_x" value="-0.001667"/>
+    <arg name="mapper_y" value="-0.001667"/>
+    <arg name="mapper_s" value="1200"/>
+    <arg name="mapper_r" value="0.25"/>
+  </include>
+  <node name="map_handler" pkg="wheego" type="map_handler.py"/>
+  <include file="$(find wheego)/launch/hybrid.launch">
+    <arg name="map_yaml" value="outLarge"/>
+  </include>
+  <!--<node name="path_follow" pkg="wheego" type="path_follow.py"/>-->
+</launch>

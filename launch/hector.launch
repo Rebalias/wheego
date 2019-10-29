@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+
+<!--Edited from hector_slam_launch/launch/tutorial.launch-->
+
+<launch>
+
+  <arg name="geotiff_map_file_path" default="$(find wheego)/maps"/>
+  <arg name="odom_f" default="base_footprint"/>
+  <arg name="scan_t" default="scan2"/>
+  <arg name="map_x" default="0.5"/>
+  <arg name="map_y" default="0.5"/>
+  <arg name="map_s" default="80"/>
+  <arg name="res" default="1"/>
+
+  <include file="$(find wheego)/launch/hmapping.launch">
+    <arg name="odom_frame" value="$(arg odom_f)"/>
+    <arg name="scan_topic" value="$(arg scan_t)"/>
+    <arg name="map_start_x" value="$(arg map_x)"/>
+    <arg name="map_start_y" value="$(arg map_y)"/>
+    <arg name="resolution" value="$(arg res)"/>
+    <arg name="map_size" value="$(arg map_s)"/>
+  </include>
+
+  <include file="$(find hector_geotiff)/launch/geotiff_mapper.launch">
+    <arg name="trajectory_source_frame_name" value="scanmatcher_frame"/>
+    <arg name="map_file_path" value="$(arg geotiff_map_file_path)"/>
+  </include>
+
+</launch>

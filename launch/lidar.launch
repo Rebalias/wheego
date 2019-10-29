@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+
+<launch>
+  <arg name="sim" default="false"/>
+  <param name="/use_sim_time" value="true" if="$(arg sim)"/>
+  <include
+    file="$(find velodyne_pointcloud)/launch/VLP16_points.launch"
+    unless="$(arg sim)"/>
+  <node pkg="tf" type="static_transform_publisher"
+    name="base_to_laser_broadcaster"
+    args="0 0 0 0 0 0 base_footprint velodyne 100"/>
+</launch>

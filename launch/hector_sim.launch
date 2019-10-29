@@ -20,7 +20,7 @@
   <include file="$(find wheego)/launch/mapping_edit.launch">
     <arg name="odom_frame" value="base_footprint"/>
     <arg name="scan_topic" value="scan2" />
-    <arg name="map_size" value="150"/>
+    <arg name="map_size" value="1200"/>
   </include>
 
   <include file="$(find hector_geotiff)/launch/geotiff_mapper.launch">
