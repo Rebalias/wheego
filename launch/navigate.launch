@@ -12,5 +12,5 @@
   <include file="$(find wheego)/launch/hybrid.launch">
     <arg name="map_yaml" value="outLarge"/>
   </include>
-  <!--<node name="path_follow" pkg="wheego" type="path_follow.py"/>-->
+  <node name="path_follow" pkg="wheego" type="path_follow.py"/>
 </launch>
