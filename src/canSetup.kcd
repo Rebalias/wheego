@@ -1,0 +1,42 @@
+<?xml version="1.0" ?>
+<NetworkDefinition xmlns="http://kayak.2codeornot2code.org/1.0" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xsi:noNamespaceSchemaLocation="Definition.xsd">
+  <Document/>
+  <Bus name="Mainbus">
+    <Message id="0x00000536" length="8" name="logitechthrottle"
+      format="standard">
+      <Signal name="throttlesignal" offset="55" length="8">
+        <Value type="unsigned" slope="1"/>
+      </Signal>
+      <Producer>
+        <NodeRef id="1"/>
+      </Producer>
+    </Message>
+    <Message id="0x18FF00F9" name="ARCommandMessage" length="8"
+      format="extended">
+      <Signal length="16" name="Variable2" offset="48">
+        <Value type="signed" slope="0.00390625" max="1"/>
+      </Signal>
+      <Signal length="32" name="Variable1" offset="16">
+        <Value type="signed" slope="9.5367431640625E-7"/>
+      </Signal>
+      <Signal length="8" name="CommandMode" offset="0">
+        <Value max="16"/>
+        <LabelSet>
+          <Label value="0" name="Off"/>
+          <Label value="1" name="Current"/>
+          <Label value="2" name="Torque Assist"/>
+          <Label value="3" name="Speed"/>
+          <Label value="4" name="Position"/>
+          <Label value="5" name="Position w/ Speed"/>
+          <Label value="16" name="Set Position"/>
+        </LabelSet>
+      </Signal>
+      <Producer>
+        <NodeRef id="1"/>
+      </Producer>
+    </Message>
+  </Bus>
+</NetworkDefinition>
+

@@ -34,11 +34,11 @@ def poseFn(pose):
     d = np.linalg.norm(t) #maybe decrease speed if d << ld
     el = np.dot(t, p) #Lateral distance
     steer = np.arctan(2*L*el/(d**2))
-    pubSteer.publish(steer)
+    pub.publish(steer)
 
 def pathFn(data):
   global path
-  if len(path.poses) > 0:
+  if len(data.poses) > 0:
     cx = [foo.pose.position.x for foo in data.poses]
     cy = [foo.pose.position.y for foo in data.poses]
     path = np.matrix.transpose(np.array([cx, cy]))[::-1]
