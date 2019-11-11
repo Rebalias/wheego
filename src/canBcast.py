@@ -37,7 +37,7 @@ while(True):
     #This won't work until we have the car CAN as well
     data = db.decode(msg.arbitration_id, msg.data)
     cur_vel = data=['velocity'] # * scalar?
-    acc = (targ_vel - cur_vel) # * scalar, previous prgm ranged 0 to 12
+    acc = (targ_vel - cur_vel)  # * scalar, previous prgm ranged 0 to 12
     if acc < 0:
       acc = 0.0
     elif acc > 12:
