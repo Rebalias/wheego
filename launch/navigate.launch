@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
 
+<!--Launches code for navigation of environment, simulation control is in viewer.launch-->
+
 <launch>
   <include file="$(find wheego)/launch/mapper.launch">
     <!-- mapper_x = mapper_y = -1/(2*mapper_s*mapper_r)-->

@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 
 <!--Edited from hector_mapping/launch/mapping_default.launch-->
+<!--Launches Hector Mapping code, has arguments to support configuration for navigation-->
 
 <launch>
   <arg name="tf_map_scanmatch_transform_frame_name" default="scanmatcher_frame"/>

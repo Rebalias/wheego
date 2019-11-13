@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
 
+<!--Launches Velodyne VLP16 code if not simulating-->
+
 <launch>
   <arg name="sim" default="false"/>
   <param name="/use_sim_time" value="true" if="$(arg sim)"/>

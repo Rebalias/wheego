@@ -12,6 +12,8 @@ init = False
 pose2 = PoseCv()
 goal2 = PoseSt()
 
+#Publish hector starting position to center of map
+#Neccesary, because map is not centered on 0,0 for hybrid astar
 def mapMask(map1):
   global xOffs
   global yOffs
@@ -29,6 +31,7 @@ def mapMask(map1):
     pubIP.publish(iPose)
     init = True
 
+#Saves latest poseupdate from hector
 def poseMask(pose1):
   global pose2
   pose2 = PoseCv()
@@ -36,6 +39,7 @@ def poseMask(pose1):
   pose2.pose = pose1.pose
   pubPD.publish(pose2)
 
+#Saves latest goal from rviz, calls bcast
 def goalFn(goal1):
   global goal2
   goal2 = PoseSt()
@@ -43,11 +47,13 @@ def goalFn(goal1):
   goal2.pose = goal1.pose
   pubGD.publish(goal2)
   bcast()
-  
+
+#Waits 5 seconds after sPath is published, then calls bcast
 def pathFn(foo):
   time.sleep(5.0)
   bcast()
 
+#Broadcasts start and end poses to hybrid A*
 def bcast():
   pubPN.publish(pose2)
   pubGN.publish(goal2)

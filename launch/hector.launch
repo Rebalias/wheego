@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 
 <!--Edited from hector_slam_launch/launch/tutorial.launch-->
+<!--Launches hector mapping code and geotiff code-->
 
 <launch>
 

@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 
 <!-- Modified from pointcloud_to_laserscan/launch/sample_node.launch -->
+<!--Launches pointcloud to laserscan node with custom range parameters-->
 
 <launch>
   <arg name="cloud" default="velodyne_points"/>

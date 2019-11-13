@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
 
+<!--Launches code for mapping and viewing data, simulation control is in viewer.launch-->
+
 <launch>
   <arg name="mapper_x" default="0.5"/>
   <arg name="mapper_y" default="0.5"/>

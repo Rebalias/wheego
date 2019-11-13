@@ -19,7 +19,7 @@ def poseFn(pose):
     theta = 2 * np.arcsin(pose.pose.pose.orientation.z)
     loc = np.array([x,y])
     p = [np.cos(theta + pi/2), np.sin(theta + pi/2)]
-    #needs better setup, maybe find closest position first?
+    #Find furthest path point within lookahead distance
     dist = np.linalg.norm(path - loc, axis=1)
     ind = np.flatnonzero((dist[:-1]<ld) & (dist[1:]>ld))
     if ind.size == 0:
@@ -36,6 +36,7 @@ def poseFn(pose):
     steer = np.arctan(2*L*el/(d**2))
     pub.publish(steer)
 
+#Converts sPath to numpy array
 def pathFn(data):
   global path
   if len(data.poses) > 0:

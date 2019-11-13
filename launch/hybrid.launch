@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 
 <!--Edited from hybrid_astar/launch/manual.launch-->
+<!--Launches Hybrid A* code-->
 
 <launch>
   <arg name="map_yaml" default="outSmall"/>

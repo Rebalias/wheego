@@ -4,45 +4,65 @@ import rospy, can, cantools
 from std_msgs.msg import Float32
 
 db = cantools.database.load_file('canSetup.kcd')
-msg_turn = db.get_message_by_name('ARCommandMessage')
-msg_move = db.get_message_by_name('logitechthrottle')
-can_bus = can.interface.Bus(bustype = 'socketcan', channel = 'vcan0', bitrate = 500000)
-can_two = can.interface.Bus(bustype = 'socketcan', channel = 'vcan1', bitrate = 500000) #TODO these shouldn't be the same bitrate?
+turnForm = db.get_message_by_name('ARCommandMessage')
+moveForm = db.get_message_by_name('logitechthrottle')
+canBus = can.interface.Bus(bustype = 'socketcan', channel = 'vcan0', bitrate = 500000)
+canTwo = can.interface.Bus(bustype = 'socketcan', channel = 'vcan1', bitrate = 500000) #TODO these shouldn't be the same bitrate?
 listener = can.BufferedListener()
 
-targ_vel = 0
+turnVal = 0.0
+rotSpeed = 0.1
+moveVal = 0.0
+targVel = 0.0
+
+turnData= turnForm.encode({'CommandMode':5, 'Variable1':turnVal, 'Variable2':rotSpeed})
+moveData= moveForm.encode({'throttlesignal':moveVal})
+
+turnMsg = can.Message(arbitration_id = turnForm.frame_id, data = turnData)
+moveMsg = can.Message(arbitration_id = moveForm.frame_id, data = moveData)
+
+#turnTask = canBus.send_periodic(turnMsg, 0.1)
+#moveTask = canBus.send_periodic(moveMsg, 0.1)
 
 def turnFn(angle):
-  val = angle * 4 #scalar, previous prgm ranged -1.25 to 1.25
-  if val < -1.25:
-    val = 1.25
-  elif val > 1.25:
-    val = 1.25
-  turn = msg_turn.encode({'CommandMode':5,'Variable1':val,'Variable2':1})
-  data_turn = can.Message(arbitration_id=msg_turn.frame_id, data=turn)
-  can_bus.send_periodic(data_turn, 0.2) #TODO set send interval
+  turnVal = angle * 4 #scalar, previous prgm ranged -1.25 to 1.25
+  if turnVal < -1.25:
+    turnVal = 1.25
+  elif turnVal > 1.25:
+    turnVal = 1.25
+  turnData = turnForm.encode({'CommandMode':5, 'Variable1':turnVal, 'Variable2':rotSpeed})
+  turnMsg = can.Message(arbitration_id=turnForm.frame_id, data=turnData)
+  #turnTask.modify_data(turnMsg)
+  canBus.send(turnMsg)
 
 def moveFn(comm):
-  global targ_vel
-  targ_vel = comm
+  global targVel
+  targVel = comm
 
 rospy.init_node('canBcast')
 
 subAng = rospy.Subscriber('steerAngle', Float32, turnFn)
-subMov = rospy.Subscriber('TODO', Float32, moveFn)
+subMov = rospy.Subscriber('moveSpeed', Float32, moveFn)
 
-while(True):
-  msg = listener.get_message() #TODO Not sure where to specify which bus?
-  if msg is not None:
-    #This won't work until we have the car CAN as well
-    data = db.decode(msg.arbitration_id, msg.data)
-    cur_vel = data=['velocity'] # * scalar?
-    acc = (targ_vel - cur_vel)  # * scalar, previous prgm ranged 0 to 12
+for msg in canTwo:
+  data = db.decode(msg.arbitration_id, msg.data)
+  if 'velocity' in data:
+    curVel = data['velocity'] # * scalar?
+    acc = int((targVel - curVel))  # * scalar?
     if acc < 0:
-      acc = 0.0
+      acc = 0
     elif acc > 12:
-      acc = 12.0
-    move=msg_move.encode({'throttlesignal':acc})
-    data_move = can.Message(arbitration_id=msg_move.frame_id, data=move)
-    can_bus.send_periodic(data_move, 0.2) #TODO set send interval
+      acc = 12
+    moveData = moveForm.encode({'throttlesignal':acc})
+    moveMsg = can.Message(arbitration_id = moveForm.frame_id, data = moveData)
+    #moveTask.modify_data(moveMsg)
+    canBus.send(moveMsg)
+
+#turnTask.stop()
+#moveTask.stop()
+
+turnData = turnForm.encode({'CommandMode':0,'Variable1':0,'Variable2':0})
+turnMsg = can.Message(arbitration_id=turnForm.frame_id, data=turnData)
+canBus.send(data_turn)
+
 
