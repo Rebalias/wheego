@@ -13,7 +13,7 @@
   <arg name="map_start_x" default="0.5"/>
   <arg name="map_start_y" default="0.5"/>
   <arg name="map_size" default="80"/>
-  <arg name="resolution" default="1"/>
+  <arg name="resolution" default="0.25"/>
   
   <node pkg="hector_mapping" type="hector_mapping" name="hector_mapping" output="screen">
     

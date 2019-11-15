@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+
+<!--Edited from hybrid_astar/launch/manual.launch-->
+<!--Launches Hybrid A* code-->
+
+<launch>
+  <arg name="map_yaml" default="outSmall"/>
+  <node name="hybrid_astar" pkg="hybrid_astar" type="hybrid_astar">
+    <remap from="initialpose" to="pose_nav"/>
+    <remap from="map" to="map_nav"/>
+  </node>
+  
+  <node name="map_server" pkg="map_server" type="map_server"
+    args="$(find wheego)/maps/$(arg map_yaml).yaml">
+    <remap from="map" to="map_nav"/>
+  </node>
+  
+  <node pkg="tf" type="static_transform_publisher"
+    name="odom_map_nav_bcast"
+    args="0 0 0 0 0 0 odom map_nav 100"/>
+  <node pkg="tf" type="static_transform_publisher"
+    name="map_nav_path_bcast"
+    args="0 0 0 0 0 0 map_nav path 100"/>
+  <node pkg="tf" type="static_transform_publisher"
+    name="map_nav_map_bcast"
+    args="0 0 0 0 0 0 map_nav map 100"/>
+</launch>

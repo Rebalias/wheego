@@ -11,11 +11,11 @@ import matplotlib.pyplot as plt
 import Path_Follow_Calls as carpull
 
 
-x_val_array = np.array([])
-y_val_array = np.array([])
+cx = np.array([])
+cy = np.array([])
 init_pose = 0
 lookahead_max = 3
-simulation =True
+simulation =False
 k = 0.1  # look forward gain
 Lfc = 1.0  # look-ahead distance
 Kp = 2.0  # speed proportional gain
@@ -30,26 +30,33 @@ show_animation2 =True
 
 
 def check_pose(msg):
-    global init_pose
-    current = msg.pose.orientation.z
-    init_pose = current
+    x = msg.pose.position.x
+    y = msg.pose.position.y
+    r = msg.pose.orientation.z
+    state = carpull.State(x, y, r, 0) 
 
 
 def trace_array(msg):
     #global pub_array
-    global x_val_array
-    global y_val_array
+    #global x_val_array
+    #global y_val_array
     global init_pose
     hold = msg.poses
     carpull.reset_dist(None)
     #make sure its not putting out no arrays or error reports
     if len(hold) > 1:
+        """
         #clear old array values if new ones need to be sent
         if len(x_val_array) >= 2:
             # print(len(x_val_array))
             x_val_array = np.array([])
             y_val_array = np.array([])
+        """
         #index poses into numpy arrays
+        global cx, cy
+        cx = np.array([foo.pose.position.x for foo in hold])[::-1]
+        cy = np.array([foo.pose.position.y for foo in hold])[::-1]
+        """
         for i in range(len(hold)):
             list_vals = hold[i]
             list_x_vals = list_vals.pose.position.x
@@ -58,6 +65,7 @@ def trace_array(msg):
             y_val_array = np.append(y_val_array, [list_y_vals])
         cx = x_val_array[::-1]
         cy= y_val_array[::-1]
+        """
         target_speed = 10.0 / 6.3
         T = 4.0
         #get car state from car_pull state class
@@ -71,7 +79,7 @@ def trace_array(msg):
         t = [0.0]
         target_ind = carpull.calc_target_index(state, cx, cy)
 
-        while T >= time and lastIndex > target_ind:
+        while time <= T and target_ind < lastIndex:
             ai = carpull.PIDControl(target_speed, state.v)
             di, target_ind = carpull.pure_pursuit_control(state, cx, cy, target_ind)
             state = carpull.update(state, ai, di)
@@ -84,7 +92,7 @@ def trace_array(msg):
             v.append(state.v)
             t.append(time)
             steer_a.publish(di)
-            if simulation is True:  # pragma: no cover
+            if simulation:  # pragma: no cover
                 plt.cla()
                 carpull.plot_arrow(state.x, state.y, state.yaw)
 

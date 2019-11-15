@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<!--Launches lidar code and rviz, has simulation control-->
+
+<launch>
+  <include file="$(find wheego)/launch/lidar.launch">
+    <arg name="sim" value="true"/>
+  </include>
+  <node name="rviz" pkg="rviz" type="rviz"
+    args="-d $(find wheego)/launch/mapNav.rviz"/>
+</launch>

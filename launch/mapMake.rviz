@@ -24,7 +24,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: LaserScan
+    SyncSource: ""
 Toolbars:
   toolButtonStyle: 2
 Visualization Manager:
@@ -73,7 +73,7 @@ Visualization Manager:
       Axes Radius: 0.100000001
       Class: rviz/Pose
       Color: 255; 25; 0
-      Enabled: false
+      Enabled: true
       Head Length: 0.300000012
       Head Radius: 0.100000001
       Name: MoveStart
@@ -82,7 +82,7 @@ Visualization Manager:
       Shape: Arrow
       Topic: /move_base_simple/start
       Unreliable: false
-      Value: false
+      Value: true
     - Alpha: 1
       Axes Length: 1
       Axes Radius: 0.100000001
@@ -104,12 +104,12 @@ Visualization Manager:
       Class: rviz/Pose
       Color: 255; 25; 0
       Enabled: true
-      Head Length: 0.600000024
-      Head Radius: 1
+      Head Length: 0.300000012
+      Head Radius: 0.100000001
       Name: SLAMPose
       Shaft Length: 1
-      Shaft Radius: 0.5
-      Shape: Arrow
+      Shaft Radius: 0.0500000007
+      Shape: Axes
       Topic: /slam_out_pose
       Unreliable: false
       Value: true
@@ -141,7 +141,7 @@ Visualization Manager:
       Marker Topic: /sPathNodes
       Name: PathNodes
       Namespaces:
-        "": true
+        {}
       Queue Size: 100
       Value: true
     - Class: rviz/MarkerArray
@@ -149,7 +149,7 @@ Visualization Manager:
       Marker Topic: /sPathVehicle
       Name: PathVehicle
       Namespaces:
-        "": true
+        {}
       Queue Size: 100
       Value: true
     - Alpha: 1
@@ -242,21 +242,6 @@ Visualization Manager:
       Use Fixed Frame: true
       Use rainbow: true
       Value: true
-    - Alpha: 1
-      Axes Length: 5
-      Axes Radius: 1
-      Class: rviz/Pose
-      Color: 255; 25; 0
-      Enabled: true
-      Head Length: 0.300000012
-      Head Radius: 0.100000001
-      Name: Pose
-      Shaft Length: 1
-      Shaft Radius: 0.0500000007
-      Shape: Axes
-      Topic: /targPose
-      Unreliable: false
-      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -291,11 +276,11 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Scale: 4.5999999
+      Scale: 2.29999995
       Target Frame: <Fixed Frame>
       Value: TopDownOrtho (rviz)
-      X: 220
-      Y: 150
+      X: 0
+      Y: 0
     Saved: ~
 Window Geometry:
   Displays:

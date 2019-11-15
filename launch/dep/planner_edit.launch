@@ -13,9 +13,10 @@
     args="0 0 0 0 0 0 base_footprint velodyne 100"/>
 
   <include file="$(find wheego)/launch/mapping_edit.launch">
-    <arg name="map_size" value="80"/>
-    <arg name="map_start_x" value="-0.00625"/> <!-- -1/map_size-->
-    <arg name="map_start_y" value="-0.00625"/>
+    <arg name="map_size" value="1200"/>
+    <arg name="resolution" value="0.25"/>
+    <arg name="map_start_x" value="-0.00333333333"/> <!-- -1/map_size-->
+    <arg name="map_start_y" value="-0.00333333333"/>
     <arg name="odom_frame" value="base_footprint"/>
     <arg name="scan_topic" value="scan2"/>
   </include>
@@ -35,7 +36,7 @@
   </node>
   
   <node name="map_server" pkg="map_server" type="map_server"
-    args="$(find wheego)/maps/outSmall.yaml">
+    args="$(find wheego)/maps/outLarge.yaml">
     <remap from="map" to="map_nav"/>
   </node>
   <node pkg="tf" type="static_transform_publisher"
