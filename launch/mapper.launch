@@ -7,8 +7,14 @@
   <arg name="mapper_y" default="0.5"/>
   <arg name="mapper_s" default="1200"/>
   <arg name="mapper_r" default="0.25"/>
-  <include file="$(find wheego)/launch/viewer.launch"/>
+  <arg name="sim_map" default="true"/>
+  <!--Launch code to read and view LIDAR data-->
+  <include file="$(find wheego)/launch/viewer.launch">
+    <arg name="sim_view" value="$(arg sim_map)"/>
+  </include>
+  <!--Launch code to transform LIDAR pointcloud into laserscan-->
   <include file="$(find wheego)/launch/pc2scan.launch"/>
+  <!--Launch hector mapping code to generate a map-->
   <include file="$(find wheego)/launch/hector.launch">
     <arg name="map_x" value="$(arg mapper_x)"/>
     <arg name="map_y" value="$(arg mapper_y)"/>

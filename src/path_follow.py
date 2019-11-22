@@ -8,8 +8,8 @@ from std_msgs.msg import Float32
 from geometry_msgs.msg import PoseWithCovarianceStamped as PoseCv
 
 path = np.array([])
-L = 1.5   #Length from rear axle to front axle
-ld = 10.0  #Look ahead distance
+L = 2.0   #Length from rear axle to front axle
+ld = 7.5  #Look ahead distance
 
 def poseFn(pose):
   if path.shape[0] > 0:

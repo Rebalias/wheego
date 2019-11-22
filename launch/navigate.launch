@@ -3,16 +3,25 @@
 <!--Launches code for navigation of environment, simulation control is in viewer.launch-->
 
 <launch>
+  <arg name="sim_nav" default="True"/>
+  <!--Launches hector mapping, recentered to positive coordinates-->
   <include file="$(find wheego)/launch/mapper.launch">
     <!-- mapper_x = mapper_y = -1/(2*mapper_s*mapper_r)-->
     <arg name="mapper_x" value="-0.001667"/>
     <arg name="mapper_y" value="-0.001667"/>
     <arg name="mapper_s" value="1200"/>
     <arg name="mapper_r" value="0.25"/>
+    <arg name="sim_map" value="$(arg sim_nav)"/>
   </include>
+  <!--Launches code which handles initial position setup and limiting-->
   <node name="map_handler" pkg="wheego" type="map_handler.py"/>
   <include file="$(find wheego)/launch/hybrid.launch">
-    <arg name="map_yaml" value="outLarge"/>
+    <arg name="map_yaml" value="outLargev2"/>
   </include>
+  <!--Launches code to generate intended steering angle-->
   <node name="path_follow" pkg="wheego" type="path_follow.py"/>
+  <node name="can_bcast" pkg="wheego" type="canBcastSteer.py">
+    <param name="pkgdir" value="$(find wheego)"/>
+    <param name="sim" value="$(arg sim_nav)"/>
+  </node>
 </launch>
