@@ -30,7 +30,7 @@ def turnFn(angle):
   global oldAng
   global diff
   turnVal = min(max(angle.data*-4,-1.25),1.25)
-  rotSpeed = min(max(angle.data*2,-0.5),0.5)
+  rotSpeed = min(max(abs(angle.data*2),0.1),0.5)
   if(bcast):
     turnData = turnForm.encode({'CommandMode':5, 'Variable1':turnVal, 'Variable2':rotSpeed})
   else:

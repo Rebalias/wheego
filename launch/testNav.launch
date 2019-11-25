@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+
+<!--Launches code for navigation of environment, simulation control is in viewer.launch-->
+
+<launch>
+  <arg name="sim_nav" default="True"/>
+  <!--Launches hector mapping, recentered to positive coordinates-->
+  <include file="$(find wheego)/launch/mapper.launch">
+    <!-- mapper_x = mapper_y = -1/(2*mapper_s*mapper_r)-->
+    <arg name="mapper_x" value="-0.001667"/>
+    <arg name="mapper_y" value="-0.001667"/>
+    <arg name="mapper_s" value="1200"/>
+    <arg name="mapper_r" value="0.25"/>
+    <arg name="sim_map" value="$(arg sim_nav)"/>
+  </include>
+  <!--Launches code which handles initial position setup and limiting-->
+  <node name="map_handler" pkg="wheego" type="map_handler.py"/>
+  <!--
+  <include file="$(find wheego)/launch/hybrid.launch">
+    <arg name="map_yaml" value="outLargev2"/>
+  </include>
+  -->
+  <node pkg="move_base" type="move_base" name="move_base">
+    <rosparam file="$(find wheego)/launch/costmap_common_params.yaml" command="load" ns="global_costmap" /> 
+    <rosparam file="$(find wheego)/launch/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find wheego)/launch/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find wheego)/launch/global_costmap_params.yaml" command="load" /> 
+    <rosparam file="$(find wheego)/launch/base_local_planner_params.yaml" command="load" />
+  </node>
+  <!--Launches code to generate intended steering angle-->
+  <node name="path_follow" pkg="wheego" type="path_follow.py">
+    <remap from="/sPath" to="/move_base/NavfnROS/plan"/>
+  </node>
+  <node name="can_bcast" pkg="wheego" type="canBcastSteer.py">
+    <param name="pkgdir" value="$(find wheego)"/>
+    <param name="sim" value="$(arg sim_nav)"/>
+  </node>
+</launch>
