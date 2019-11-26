@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<launch>
+
+
+  <arg name="odom_input" default="/scanmatch_odom"/>
+  <arg name="tf_output" default="/base_link"/>
+
+	<node name="odomtransformer" pkg="wheego" type="odomtransformer.py" output="screen">
+		<param name="odom_input" value="/scanmatch_odom" />
+		<param name="tf_output" value="/base_link" />
+	</node>
+
+</launch>
+
