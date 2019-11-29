@@ -14,12 +14,24 @@
     <arg name="sim_map" value="$(arg sim_nav)"/>
   </include>
   <!--Launches code which handles initial position setup and limiting-->
-  <node name="map_handler" pkg="wheego" type="map_handler.py"/>
+  <node name="map_handler" pkg="wheego" type="map_handler.py" output="screen"/>
+  <!--
   <include file="$(find wheego)/launch/hybrid.launch">
     <arg name="map_yaml" value="outLargev2"/>
   </include>
+  -->
+  <node pkg="move_base" type="move_base" name="move_base">
+    <rosparam file="$(find wheego)/launch/costmap_common_params.yaml" command="load" ns="global_costmap" /> 
+    <rosparam file="$(find wheego)/launch/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find wheego)/launch/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find wheego)/launch/global_costmap_params.yaml" command="load" /> 
+    <rosparam file="$(find wheego)/launch/base_local_planner_params.yaml" command="load" />
+    <remap from="/move_base_simple/goal" to="/goal_nav"/>
+  </node>
   <!--Launches code to generate intended steering angle-->
-  <node name="path_follow" pkg="wheego" type="path_follow.py"/>
+  <node name="path_follow" pkg="wheego" type="path_follow.py">
+    <remap from="/sPath" to="/move_base/NavfnROS/plan"/>
+  </node>
   <node name="can_bcast" pkg="wheego" type="canBcastSteer.py">
     <param name="pkgdir" value="$(find wheego)"/>
     <param name="sim" value="$(arg sim_nav)"/>

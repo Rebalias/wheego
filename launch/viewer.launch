@@ -3,8 +3,9 @@
 <!--Launches lidar code and rviz, has simulation control-->
 
 <launch>
+  <arg name="sim_view" default="true"/>
   <include file="$(find wheego)/launch/lidar.launch">
-    <arg name="sim" value="true"/>
+    <arg name="sim" value="$(arg sim_view)"/>
   </include>
   <node name="rviz" pkg="rviz" type="rviz"
     args="-d $(find wheego)/launch/mapNav.rviz"/>

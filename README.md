@@ -1,20 +1,20 @@
-# Wheego
+### KSU MTRE Fall 2019 Wheego Project
 
 Kennesaw State University Mechatronics Engineering Senior Design Project Fall 2019, making the Wheego LiFe Car capable of autonomous parking lot navigation using the Velodyne VLP 16 LIDAR and a Jetson Xavier
 
-Developed on Ubuntu Xenial and ROS Kinetic, should be compatible with Ubuntu Bionic and ROS Melodic
+Developed with Ubuntu Xenial and ROS Kinetic, tested with Ubuntu Bionic and ROS Melodic
 
-## Non-Standard Dependencies
+#### Non-Standard Dependencies
 
-### ROS Packages
+##### ROS Packages
 
-* [Velodyne](https://wiki.ros.org/velodyne)
-  * [Setup Guide](https://wiki.ros.org/velodyne/Tutorials/Getting%20Started%20with%20the%20Velodyne%20VLP16)
-* [Pointcloud to Laserscan](https://wiki.ros.org/pointcloud_to_laserscan)
-* [Hector Mapping](https://wiki.ros.org/hector_mapping)
-* [Karl Kurzer's Hybrid A\* Path Planner](https://github.com/karlkurzer/path_planner)
+* [ROS Velodyne Package](https://wiki.ros.org/velodyne)
+  * [Setup Guide for VLP-16 Model](https://wiki.ros.org/velodyne/Tutorials/Getting%20Started%20with%20the%20Velodyne%20VLP16)
+* [ROS Pointcloud to Laserscan Package](https://wiki.ros.org/pointcloud_to_laserscan)
+* [ROS Hector Mapping Package](https://wiki.ros.org/hector_mapping)
+* [ROS Navigation Package](https://wiki.ros.org/navigation)
 
-### Python Libraries
+##### Python Libraries
 
 * python-can verision 3.1.1
 
@@ -24,10 +24,6 @@ Developed on Ubuntu Xenial and ROS Kinetic, should be compatible with Ubuntu Bio
 
   `pip install cantools==29.7.0 --user`
 
-## Usage
+#### Usage
 
-To view LIDAR data, roslaunch viewer.launch. To view prerecorded LIDAR data such as a rosbag, alter the sim argument in viewer.launch to be true instead of false
-
-To use hector mapping, roslaunch mapper.launch. This will use the sim argument set in viewer.launch.
-
-To use use full navigation, roslaunch navigate.launch. Again, this will use the sim argument set in viewer.launch.
+To view LIDAR data, roslaunch viewer.launch. To use hector mapping, roslaunch mapper.launch. To use use full navigation, roslaunch testNav.launch. Each of these files has a sim argument set to True. Change this to False for use with live data.

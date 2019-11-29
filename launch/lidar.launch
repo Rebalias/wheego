@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<!--Launches Velodyne VLP16 code if not simulating-->
+<!--Launches transform for LIDAR, and Velodyne VLP16 code if not simulating-->
 
 <launch>
   <arg name="sim" default="false"/>

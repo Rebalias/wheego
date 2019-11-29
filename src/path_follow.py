@@ -8,8 +8,8 @@ from std_msgs.msg import Float32
 from geometry_msgs.msg import PoseWithCovarianceStamped as PoseCv
 
 path = np.array([])
-L = 1.5   #Length from rear axle to front axle
-ld = 10.0  #Look ahead distance
+L = 2.0   #Length from rear axle to front axle
+ld = 7.5  #Look ahead distance
 
 def poseFn(pose):
   if path.shape[0] > 0:
@@ -20,6 +20,7 @@ def poseFn(pose):
     loc = np.array([x,y])
     p = [np.cos(theta + pi/2), np.sin(theta + pi/2)]
     #Find furthest path point within lookahead distance
+    #ang = np.array([(np.arccos(np.dot(path[i], path[i+1]) / (np.linalg.norm(path[i]) * np.linalg.norm(path[i+1])))) for i in range(path.shape[0])])
     dist = np.linalg.norm(path - loc, axis=1)
     ind = np.flatnonzero((dist[:-1]<ld) & (dist[1:]>ld))
     if ind.size == 0:
@@ -42,7 +43,7 @@ def pathFn(data):
   if len(data.poses) > 0:
     cx = [foo.pose.position.x for foo in data.poses]
     cy = [foo.pose.position.y for foo in data.poses]
-    path = np.matrix.transpose(np.array([cx, cy]))[::-1]
+    path = np.matrix.transpose(np.array([cx, cy]))
     print(path)
 
 rospy.init_node('path_follow')
