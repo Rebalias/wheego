@@ -13,8 +13,8 @@
     <rosparam>
       min_height: -1.0
       max_height: 0.0
-      angle_min: -3.14159     # -M_PI
-      angle_max: 3.14159      # M_PI
+      angle_min: -2.75         # -M_PI -3.14159
+      angle_max: 2.75          # M_PI 3.14159
       angle_increment: 0.0044 # M_PI/720.0
       range_min: 2.0
       range_max: 90.0
