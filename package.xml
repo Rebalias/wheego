@@ -61,10 +61,10 @@
   <depend>sensor_msgs</depend>
 
   <depend>nav_msgs</depend>
-  <build_depend>velodyne_pointcloud</build_depend>
-  <build_depend>hybrid_astar</build_depend>
-  <exec_depend>velodyne_pointcloud</exec_depend>
-  <exec_depend>hybrid_astar</exec_depend>
+  <depend>velodyne_pointcloud</depend>
+  <depend>pointcloud_to_laserscan</depend>
+  <depend>hector_mapping</depend>
+  <depend>move_base</depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->

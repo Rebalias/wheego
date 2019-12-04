@@ -39,7 +39,7 @@ pip install textparser
 
 #### Usage
 
-To view LIDAR data, roslaunch viewer.launch. To use hector mapping, roslaunch mapper.launch. To use use full navigation, roslaunch testNav.launch, and the goal can be selected by placing a 2D Nav Goal in rviz. Each of the launch files has a sim argument set to True, change this to False in whichever one you launch for use with live data.
+To view LIDAR data, roslaunch `viewer.launch`. To use hector mapping, roslaunch `mapper.launch`. To use use full navigation, roslaunch `testNav.launch`, and the goal can be selected by placing a 2D Nav Goal in rviz. Each of the launch files has a sim argument set to True, change this to False in whichever one you launch for use with live data.
 
 The primary pieces of code that we have developed are `map_handler.py`, `path_follow.py`, and `canBcastSteer.py`.
 
